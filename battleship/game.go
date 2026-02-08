@@ -35,7 +35,7 @@ func (b *Board) PlaceShip(ship Ship, startPos Coord, horizontal bool) {
 	// we know where ship's length, where it will start & if it is horizontal or vertical
 	// based on that we can get the coords of the ship
 	shipCoords := GetShipCoords(startPos, ship.Size, horizontal)
-	if (shipCoords.IsValidCoords) {
+	if (shipCoords.IsValidSpace) {
 		// set coords of ship & board
 		// add ship pointer to board ships array 
 		// send to frontend
@@ -57,6 +57,7 @@ func indexToCoord(index int) Coord {
 		X: index % BoardSize,
 	}
 }
+
 func GetShipCoords(startPos Coord, size int, horizontal bool) []Coord {
 	coords := make([]Coord, size)
 	for i:= 0; i < size; i++ {

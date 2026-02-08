@@ -20,14 +20,14 @@ package main
 * 	turn by turn game phase until game over
 * 		each turn is 15 seconds(eventually make it configurable in room/game settings by players probably but just hardcode it for the mvp)
 * 		player 1 - chooses a valid square on enemy board
-* 			a square is valid if 
+* 			a square is valid if
 * 				hasn't been chosen before. that's pretty much the only check we need to do
 * 			so have to keep track of if a square has been visited. visited set, this pattern shows up a lot
 * 			check if that square is a hit on the enemy board
 * 			if it is mark that hit on the coords of ship object that was hit
 * 			otherwise just mark it as visited so we can't choose that square again
 * 			check if player 1 has won, if not, swap player and loop until either player wins
-*/
+ */
 
 func main() {
 	player1Board := GetBoard()
@@ -37,17 +37,16 @@ func main() {
 	player1Ships := []Ship{}
 	player2Ships := []Ship{}
 
-
 	for _, size := range shipSizes {
 		player1Ships = append(player1Ships, Ship{
-			Size: size,
+			Size:   size,
 			Coords: make(map[Coord]Hit),
-			Sunk: false,
+			Sunk:   false,
 		})
 		player2Ships = append(player2Ships, Ship{
-			Size: size,
+			Size:   size,
 			Coords: make(map[Coord]Hit),
-			Sunk: false,
+			Sunk:   false,
 		})
 	}
 }

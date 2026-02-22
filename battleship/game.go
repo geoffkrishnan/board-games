@@ -29,6 +29,14 @@ func GetBoard() *Board {
 	}
 }
 
+func GetShip(size int) Ship {
+	return Ship{
+		Size:   size,
+		Coords: make(map[Coord]Hit),
+		Sunk:   false,
+	}
+}
+
 func (b *Board) PlaceShip(ship Ship, startPos Coord, horizontal bool) string {
 	// using KB's idea to pass in horizontal/vertical bool
 	// tried without and causes a ton of extra work so better if we just get that from frontend

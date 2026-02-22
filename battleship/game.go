@@ -99,7 +99,14 @@ func (b *Board) CheckIfMissileHit(c Coord) bool {
 		return false
 	}
 	b.Guesses[idx] = true
+
 	if b.Grid[idx] == 1 {
+		for _, ship := range b.Ships {
+			if _, ok := ship.Coords[c]; ok {
+				ship.Coords[c] = true
+				ship.Sunk = b.isShipSunk(ship)
+			}
+		}
 		return true
 	}
 	return false
@@ -108,6 +115,15 @@ func (b *Board) CheckIfMissileHit(c Coord) bool {
 func (b *Board) IsGameOver() bool {
 	for _, s := range b.Ships {
 		if !s.Sunk {
+			return false
+		}
+	}
+	return true
+}
+
+func (b *Board) isShipSunk(s *Ship) bool {
+	for _, hit := range s.Coords {
+		if !hit {
 			return false
 		}
 	}

@@ -34,19 +34,12 @@ func main() {
 	player2Board := GetBoard()
 
 	shipSizes := []int{5, 4, 3, 3, 2}
+
 	player1Ships := []Ship{}
 	player2Ships := []Ship{}
 
 	for _, size := range shipSizes {
-		player1Ships = append(player1Ships, Ship{
-			Size:   size,
-			Coords: make(map[Coord]Hit),
-			Sunk:   false,
-		})
-		player2Ships = append(player2Ships, Ship{
-			Size:   size,
-			Coords: make(map[Coord]Hit),
-			Sunk:   false,
-		})
+		player1Ships = append(player1Ships, GetShip(size))
+		player2Ships = append(player1Ships, GetShip(size))
 	}
 }

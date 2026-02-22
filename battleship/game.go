@@ -78,19 +78,40 @@ func GetShipCoords(startPos Coord, size int, horizontal bool) []Coord {
 	return coords
 }
 
-func (b *Board) IsValidSpace(coords []Coord) bool {}
-
 // check if coords are valid
-// within bounds of grid
+// has to be within bounds of grid
 // doesn't overlap with existing ships
+func (b *Board) IsValidSpace(coords []Coord) bool {
+	for _, c := range coords {
+		if c.X >= BoardSize || c.Y >= BoardSize || c.X < 0 || c.Y < 0 {
+			return false
+		}
+		if b.Grid[coordToIndex(c)] == 1 {
+			return false
+		}
+	}
+	return true
+}
 
-func (b *Board) CheckIfMissileHit(c Coord) bool {}
+// mark coord as guessed
+// check if ship exists at guess coord
+func (b *Board) CheckIfMissileHit(c Coord) bool {
+	idx := coordToIndex(c)
+	if b.Guesses[idx] {
+		return false
+	}
+	b.Guesses[idx] = true
+	if b.Grid[idx] == 1 {
+		return true
+	}
+	return false
+}
 
-// if missile hit, mark that on the board/ship and let the frontend know
-// otherwise missile miss, mark it on the borad and let the frontend know
-
-func (b *Board) IsGameOver() {}
-
-// at the end of a player's turn,
-// iterate through the ships of the opposing player
-//    if all ships sunk of opposing player, current player won and game over
+func (b *Board) IsGameOver() bool {
+	for _, s := range b.Ships {
+		if !s.Sunk {
+			return false
+		}
+	}
+	return true
+}

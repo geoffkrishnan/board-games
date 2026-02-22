@@ -1,5 +1,7 @@
 package main
 
+import "errors"
+
 type Coord struct {
 	X, Y int // x == column, y == row
 }
@@ -37,22 +39,18 @@ func GetShip(size int) Ship {
 	}
 }
 
-func (b *Board) PlaceShip(ship Ship, startPos Coord, horizontal bool) string {
-	// using KB's idea to pass in horizontal/vertical bool
-	// tried without and causes a ton of extra work so better if we just get that from frontend
-	// we know where ship's length, where it will start & if it is horizontal or vertical
-	// based on that we can get the coords of the ship
+func (b *Board) PlaceShip(ship Ship, startPos Coord, horizontal bool) error {
 	shipCoords := GetShipCoords(startPos, ship.Size, horizontal)
 	if b.IsValidSpace(shipCoords) {
-		// set coords of ship & board
-		// add ship pointer to board ships array
-		// send to frontend
-		return "valid"
+		for _, c := range shipCoords {
+			b.Grid[coordToIndex(c)] = 1
+			ship.Coords[c] = false
+		}
+		b.Ships = append(b.Ships, &ship)
+		return nil
 	} else {
-		return "invalid"
+		return errors.New("Invalid place for ship")
 	}
-	// i think we need to call this for the hover preview as well.
-	// this needs to be efficient since many concurrent calls will happen
 }
 
 func coordToIndex(c Coord) int {
